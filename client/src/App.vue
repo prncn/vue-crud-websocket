@@ -4,7 +4,7 @@
       :name="transName"
       :mode="transMode"
     >
-      <router-view class="transition"/>
+      <router-view :key="$route.fullPath" class="transition"/>
     </transition>
   </v-app>
 </template>
@@ -39,9 +39,13 @@ export default {
 
 :root {
   --primary: #5f5cff;
+  --secondary: #00BFA5;
 }
 
-.v-application {
+$primary: #5f5cff;
+$secondary: #00BFA5;
+
+.v-application, .v-application .body {
   font-family: 'Inter', sans-serif;
 }
 
@@ -49,7 +53,7 @@ export default {
   background-color: #212121;
 }
 
-.Dashboard, .Profile, .Status {
+.Dashboard, .Profile, .Status, .Users {
   height: 100%;
   width: 100%;
   background-color: #fafafa;
@@ -115,4 +119,17 @@ $duration: 0.5s;
   z-index: -1;
 }
 
+.v-sheet.v-card {
+  width: 500px;
+}
+
+@media screen and (max-width: 1000px) {
+  .v-sheet.v-card {
+    width: 95vw;
+  }
+
+  .v-application p {
+    margin-bottom: 2px;
+  }
+}
 </style>

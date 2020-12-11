@@ -54,17 +54,20 @@ export default {
 
 .hero-img {
   position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
   right: 0;
-  top: 10px;
-  width: 50%;
+  top: -1rem;
+  width: 45rem;
   z-index: -1;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 1000px) {
   .hero-img {
-    width: 100%;
+    top: -5rem;
+    width: 40rem;
   }
-
   .text-h1 {
     font-size: 5.5em !important;
   }

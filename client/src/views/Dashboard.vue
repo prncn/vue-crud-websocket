@@ -11,7 +11,7 @@
         class="ma-1 px-5"
       ></v-progress-circular>
       <h1 v-else class="subheading primary--text ml-2">
-        {{ this.postCount }} posts
+        {{ posts.length }} posts
       </h1>
     </v-row>
     <Posts :posts="this.posts"/>
@@ -37,8 +37,14 @@ export default {
     posts: [],
   }),
   computed: {
-    ...mapState(["userIP"]),
-    ...mapGetters(["postCount"]),
+    ...mapState(['userIP', 'newPost']),
+    ...mapGetters(['postCount']),
+  },
+  watch: {
+    newPost(newData) {
+      console.log('Posting...');
+      this.posts.push(newData);
+    }
   },
   methods: {
     async setPosts() {
@@ -63,15 +69,8 @@ export default {
     // const PostsComponent = document.getElementsByClassName("PostsComponent")[0];
     // if (PostsComponent) PostsComponent.classList.add("hide-component");
     await this.setPosts();
-    // document
-    //   .getElementsByClassName("PostsComponent")[0]
-    //   .classList.remove("hide-component");
-  },
-
-  async mounted() {
-    // const PostsComponent = document.getElementsByClassName("PostsComponent")[0];
-    // if (PostsComponent) PostsComponent.classList.add("hide-component");
-    // await this.setPosts();
+    const user = await APIService.findUser(this.userIP);
+    this.$store.commit('GET_ICON', user);
     // document
     //   .getElementsByClassName("PostsComponent")[0]
     //   .classList.remove("hide-component");

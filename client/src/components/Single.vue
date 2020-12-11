@@ -1,6 +1,6 @@
 <template>
   <div class="SingleComponent">
-    <v-card class="my-2 pa-1" elevation="15" width="500" :color="status ? 'primary' : 'white'">
+    <v-card class="my-2 pa-1" elevation="15" :color="status ? 'primary' : 'white'">
       <v-card-text color="white">
         <v-row></v-row>
         <p class="grey--text">
@@ -17,7 +17,7 @@
         <v-btn v-if="post.userIP === userIP" icon @click.prevent="deletePost(post)">
           <v-icon :color="status ? 'white' : 'teal accent-4'">{{ mdiDeleteOutline }}</v-icon>
         </v-btn>
-        <v-btn icon :to="`/${post.userIP}/status/${post._id}`">
+        <v-btn icon @click="routeTo(post)">
           <v-icon :color="status ? 'white' : 'teal accent-4'">{{ mdiCommentProcessingOutline }}</v-icon>
         </v-btn>
         <v-btn icon @click.prevent="likePost(post)">
@@ -62,7 +62,9 @@ export default {
   methods: {
     async deletePost(post) {
       await APIService.deletePost(post._id, this.userIP);
-      this.$store.commit('DEL_POST', post);
+      this.$destroy();
+      this.$el.parentNode.removeChild(this.$el);
+      // this.$store.commit('DEL_POST', post);
     },
 
     async likePost(post) {
@@ -73,7 +75,6 @@ export default {
         APIService.unlikePost(post._id, this.userIP);
         this.$set(post, 'likes', post.likes - 1);
       }
-
       post.isLiked = !post.isLiked;
     },
 
@@ -85,7 +86,12 @@ export default {
       let parent = await APIService.findPost(post.parent, {});
       let parentIP = await parent.userIP;
       this.replyTo = parentIP;
-    }
+    },
+
+    routeTo(post) {
+      this.$router.push({ path: `/${post.userIP}/status/${post._id}` });
+      // this.$router.go();
+    },
   },
   async created() {
     if(this.post.parent){

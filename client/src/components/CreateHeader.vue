@@ -1,8 +1,8 @@
 <template>
     <v-container>
-      <v-form @submit.prevent="createPost(text, 'status')">
+      <v-form @submit.prevent="createPost(text, 'status')" xs="12">
         <v-row justify="center">
-          <v-col cols="6" lg="4">
+          <v-col cols="6" md="4">
             <v-text-field 
             counter="201" maxlength="201" 
             class="mt-1" placeholder="What's on your mind..." 

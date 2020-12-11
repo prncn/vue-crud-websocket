@@ -22,6 +22,7 @@ router.post("/", async (request, response) => {
   const users = await loadDataBase();
   await users.insertOne({
     userIP: request.body.userIP,
+    icon: Math.floor(Math.random() * 6),
     created_posts: [],
     liked_posts: [],
     joined_at: new Date(),

@@ -26,7 +26,7 @@
         </v-row>
       </v-form>
       </v-container>
-      <Posts/>
+      <Posts :posts="this.replies"/>
   </div>
 </template>
 
@@ -52,6 +52,7 @@ export default {
     post: '',
     text: '',
     postId: '',
+    replies: [],
 
     mdiDeleteOutline,
     mdiHeartOutline,
@@ -68,7 +69,8 @@ export default {
     async createReply(content, type) {
       const parentId = this.postId;
       const post = await APIService.createPost(content, type, this.userIP, { parentId });
-      this.$store.commit('ADD_POST', post);
+      // this.$store.commit('ADD_POST', post);
+      this.replies.push(post);
       this.text = '';
     },
 
@@ -76,23 +78,13 @@ export default {
       const statusPost = await APIService.findPost(this.postId, {});
       const replies = await statusPost.replies;
 
-      console.log(replies);
-
       let posts = [];
       for(let replyId of replies){
         const reply = await APIService.findPost(replyId, {});
         posts.push(reply);
       }
 
-      // for (let post of posts) {
-      //   if (likedPosts.includes(post._id)) {
-      //     post.isLiked = true;
-      //   } else {
-      //     post.isLiked = false;
-      //   }
-      // }
-
-      this.$store.commit('SET_POSTS', posts);
+      this.replies = posts;
     },
   },
   async created() {

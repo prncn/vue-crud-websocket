@@ -56,7 +56,7 @@ router.post("/", async (request, response) => {
 	likes: 0,
 	replies: [],
 	created_at: new Date(),
-  });
+  }).catch(error => console.log(error));;
 
   const sentPost = await sendingPost.ops[0];
 
@@ -69,11 +69,11 @@ router.put("/:id/reply", async (request, response) => {
   await posts.updateOne(
 	{ _id: new mongodb.ObjectID(request.params.id) },
 	{ $push: { replies: request.body.replyId } }
-  );
+  ).catch(error => console.log(error));;
   await posts.updateOne(
 	{ _id: new mongodb.ObjectID(request.body.replyId) },
 	{ $set: { parent: request.params.id } }
-  );
+  ).catch(error => console.log(error));;
 
   response.status(200).send();
 });
@@ -83,7 +83,7 @@ router.delete("/:id/reply", async (request, response) => {
   await posts.updateOne(
 	{ _id: new mongodb.ObjectID(request.params.id) },
 	{ $pull: { replies: request.body.replyId } }
-  );
+  ).catch(error => console.log(error));;
 
   response.status(200).send();
 });
@@ -95,7 +95,7 @@ router.patch("/:id/like", async (request, response) => {
 	{
 	  $inc: { likes: 1 },
 	}
-  );
+  ).catch(error => console.log(error));;
   response.status(200).send();
 });
 
@@ -106,13 +106,13 @@ router.patch("/:id/unlike", async (request, response) => {
 	{
 	  $inc: { likes: -1 },
 	}
-  );
+  ).catch(error => console.log(error));
   response.status(200).send();
 });
 
 router.delete("/:id", async (request, response) => {
   const posts = await loadDataBase();
-  await posts.deleteOne({ _id: new mongodb.ObjectID(request.params.id) });
+  await posts.deleteOne({ _id: new mongodb.ObjectID(request.params.id) }).catch(error => console.log(error));;
   response.status(200).send();
 });
 	
