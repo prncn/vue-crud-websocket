@@ -2,7 +2,7 @@
   <div class="Profile">
     <Navbar/>
     <v-row justify="center">
-      <h1 class="subheading mr-2">Me</h1>
+      <h1 class="subheading mr-2">{{ queryIP === userIP ? 'Me' : queryIP }}</h1>
       <v-progress-circular
         v-if="isLoading"
         indeterminate

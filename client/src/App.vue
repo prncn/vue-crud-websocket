@@ -10,12 +10,19 @@
 </template>
 
 <script>
+import io from 'socket.io-client';
+import { mapState } from 'vuex'; 
+
 export default {
   name: 'App',
   data: () => ({
     transName: '',
     transMode: '',
+    socket: io.connect('http://localhost:5000'),
   }),
+  computed: {
+    ...mapState(['socketCount']),
+  },
   watch: {
     '$route' (to, from) {
       if(from.name === 'home'){
@@ -25,8 +32,22 @@ export default {
         this.transMode = 'out-in';
         this.transName = 'fade';
       }
-    }
-  }
+    },
+    // userCount: function(current) {
+    //   this.$store.commit('INCRM_COUNT', current);
+    // },
+  },
+  async created() {
+    this.socket.on('connect', function(){ 
+      console.log('Client connected..');
+    });
+
+    this.socket.on('broadcast', data => {
+      console.log('Fired broadcast..');
+      console.log(data);
+      this.$store.commit('INCRM_COUNT', data);
+    })
+  },
 };
 </script>
 

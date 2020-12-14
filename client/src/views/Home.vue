@@ -7,15 +7,26 @@
       >
         Canister.
       </div>
-      <v-btn
-        icon
-        large
-        color="white"
-        class="ma-10 action-bottom"
+      <v-btn 
+        dark 
+        class="ma-10 action-bottom upper"
         @click.prevent="auth()"
       >
-        <v-icon large>{{ mdiChevronDown }}</v-icon>
+        Connect
       </v-btn>
+
+      <transition name="fade">
+        <v-btn
+          v-if="this.proceed"
+          icon
+          large
+          color="white"
+          class="ma-10 action-bottom"
+          to="/dash"
+        >
+          <v-icon large>{{ mdiChevronDown }}</v-icon>
+        </v-btn>
+      </transition>
     </v-container>
   </div>
 </template>
@@ -23,12 +34,12 @@
 <script>
 import { mdiChevronDown } from "@mdi/js";
 import APIService from "../APIService";
-import router from "../router";
 
 export default {
   name: "Home",
   data: () => ({
     mdiChevronDown,
+    proceed: false,
   }),
   methods: {
     async auth() {
@@ -38,8 +49,8 @@ export default {
       if (!user) {
         await APIService.createUser(sessionIP);
       }
-      localStorage.setItem("user_token", sessionIP);
-      router.push("dash");
+      localStorage.setItem('user_token', sessionIP);
+      this.proceed = true;
     },
   },
 };
@@ -77,5 +88,16 @@ export default {
   position: absolute;
   bottom: 1.25rem;
   margin: auto;
+}
+
+.upper {
+  bottom: 5rem !important;
+}
+
+fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>

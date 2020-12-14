@@ -1,7 +1,9 @@
 <template>
   <nav>
     <v-toolbar flat height="100" class="px-10 blue grey lighten-5">
-      <v-toolbar-title class="font-weight-bold title ml-15">canister</v-toolbar-title>
+      <v-toolbar-title class="font-weight-bold title ml-15"
+        >canister</v-toolbar-title
+      >
       <v-spacer></v-spacer>
       <v-app-bar-nav-icon @click.stop="switchDraw()"></v-app-bar-nav-icon>
       <div>{{ time }}</div>
@@ -9,7 +11,7 @@
 
     <v-navigation-drawer
       permanent
-      fixed=true
+      :fixed="true"
       :mini-variant.sync="drawer"
       mini-variant-width="5rem"
       dark
@@ -21,15 +23,11 @@
         <p class="text-caption grey--text mt-1">logged in as {{ userIP }}</p>
       </v-row>
       <v-list flat class="text-h4 font-weight-bold" nav>
-
         <v-avatar v-if="!drawer" size="120" class="mb-5 outlined">
-          <img :src="fetchImage">
+          <img :src="fetchImage" />
         </v-avatar>
 
-        <v-list-item-group
-          v-model="group"
-          active-class="primary--text"
-        >
+        <v-list-item-group v-model="group" active-class="primary--text">
           <v-list-item
             v-for="(route, index) in routes"
             :key="index"
@@ -50,33 +48,38 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
+
+      <p class="text-caption grey--text mt-1">
+        <span class="st-sm status-indicator mx-3"></span
+        >{{ socketCount }} currently online.
+      </p>
     </v-navigation-drawer>
   </nav>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import APIService from '../APIService';
+import { mapState } from "vuex";
+import APIService from "../APIService";
 
 export default {
   data: () => ({
-    time: '',
+    time: "",
     drawer: false,
     group: null,
     routes: [
-      { link: '/', text: 'Home', icon: 'mdi-home-variant' },
-      { link: '/dash', text: 'Dashboard', icon: 'mdi-view-dashboard' },
-      { link: '/users', text: 'Users', icon: 'mdi-account-multiple' },
-      { link: '/me', text: 'Profile', icon: 'mdi-forum' },
+      { link: "/", text: "Home", icon: "mdi-home-variant" },
+      { link: "/dash", text: "Dashboard", icon: "mdi-view-dashboard" },
+      { link: "/users", text: "Users", icon: "mdi-account-multiple" },
+      { link: "/me", text: "Profile", icon: "mdi-forum" },
     ],
   }),
   computed: {
-    ...mapState(['userIP', 'userIcon']),
+    ...mapState(["userIP", "userIcon", "socketCount"]),
     fetchImage() {
       if (!this.userIcon) return;
       const fileName = this.userIcon;
-      return require(`../assets/avatar-icons/av-icon-${fileName}.jpg`); 
-    }
+      return require(`../assets/avatar-icons/av-icon-${fileName}.jpg`);
+    },
   },
   watch: {
     group() {
@@ -90,12 +93,15 @@ export default {
     },
   },
   async created() {
-    this.time = new Date().toLocaleTimeString('en-GB', { hour: "numeric", minute: "numeric"});
-    if(!this.userIcon){
+    this.time = new Date().toLocaleTimeString("en-GB", {
+      hour: "numeric",
+      minute: "numeric",
+    });
+    if (!this.userIcon) {
       const user = await APIService.findUser(this.userIP);
-      this.$store.commit('GET_ICON', user);
+      this.$store.commit("GET_ICON", user);
     }
-  }
+  },
 };
 </script>
 
@@ -116,6 +122,6 @@ export default {
 
 .v-avatar.outlined {
   border: 4px solid var(--secondary);
-  border-radius:50%;
+  border-radius: 50%;
 }
 </style>

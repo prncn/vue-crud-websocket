@@ -8,7 +8,7 @@
             <img :src="fetchImage(user.icon)">
           </v-avatar>
           <p class="primary--text">{{ user.userIP }}</p>
-          <span class="status-indic"></span>
+          <span class="status-indicator st-fix"></span>
         </div>
       </div>
     </v-container>
@@ -47,13 +47,22 @@ export default {
   position: relative;
 }
 
-.status-indic {
+.status-indicator {
   height: 20px;
   width: 20px;
   background-color: var(--secondary);
   border-radius: 50%;
+}
+
+.st-fix {
   position: absolute;
   top: 7%;
   right: 7%;
+}
+
+.st-sm {
+  display: inline-block;
+  height: 10px !important;
+  width: 10px !important;
 }
 </style>
