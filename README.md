@@ -11,3 +11,6 @@ emulates basic user experience with a user database and profile data.
 ## MEVN
 Build with the MEVN stack: MongoDB, Express, Vue, and NodeJS. Frontend is created with  
 Vuetify. Express handles the server side aspects such as database (MongoDB) communication, REST-API, and the websocket. 
+
+*DEMO:*  
+https://canister-sierra-10495.herokuapp.com/
